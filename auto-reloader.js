@@ -7,10 +7,9 @@
     {path: location.href, lastModified: null}
   ];
 
-  var INTERVAL = 500;
+  var INTERVAL = 1000;
 
   var counter = 0;
-  var initPollCount = 0;
   var isBusy = false;
 
   /**
@@ -63,6 +62,15 @@
     }, INTERVAL);
   };
 
+  var isInitialied = function() {
+    for (var i = 0; i < TARGET_FILES.length; i++) {
+      if (TARGET_FILES[i].lastModified === null) {
+        return false;
+      }
+    }
+    return true;
+  };
+
   /**
   * check update
   * @name checkUpdate
@@ -75,20 +83,23 @@
     var lastModified = TARGET_FILES[index].lastModified;
     var xhr = createXMLHTTPRequest();
     xhr.open('GET', fileName, true);
+    if (lastModified) {
+      xhr.setRequestHeader("If-Modified-Since", lastModified + " ");
+    }
     xhr.onreadystatechange = function() {
       if(xhr.readyState === 4){
         var fileLastModified = xhr.getResponseHeader("Last-Modified");
-        if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
-          if (initPollCount > TARGET_FILES.length) {
+        if (xhr.status === 200) {
+          if (isInitialied()) {
             if (xhr.responseText) {
               if (lastModified !== fileLastModified) {
                 TARGET_FILES[index].lastModified = fileLastModified;
+                //document.getElementById("output").innerHTML = (new Date()).toString();
                 reload();
               }
             }
           } else {
             TARGET_FILES[index].lastModified = fileLastModified;
-            initPollCount++;
           }
         }
       }
