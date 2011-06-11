@@ -5,7 +5,7 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta http-equiv="content-language" content="ja">
 
-    <title>AutoReloader.js sample</title>
+    <title>AutoReloader.js</title>
 
     <meta http-equiv="content-script-type" content="text/javascript">
     <meta http-equiv="content-style-type" content="text/css">
@@ -13,8 +13,42 @@
 
   </head>
   <body>
-    <h1>AutoReloader.js sample</h1>
-    <p>please edit this file and style.css!</p>
+    <div id="container">
+      <h1>AutoReloader.js</h1>
+      <p id="description">auto refresh your browser</p>
+      <h2>what is it ?</h2>
+      <p>
+        Please open this file via HTTP<br>
+        for example http://localhost/AutoReloader-js/index.html<br>
+        and edit this file !
+      </p>
+      <h2>usage</h2>
+      <p>put below code to page bottom</p>
+      <pre>
+&lt;script type="text/javascript" src="auto-reloader.js"&gt;&lt;/script&gt;</pre>
+      <h3>multiple file watching</h3>
+      <p>want to watching css, js and swf ? using AutoReloader.add()</p>
+      <pre>
+&lt;script type="text/javascript"&gt;
+  AutoReloader.add("style.css", "index.js", "animation.swf");
+&lt;/script&gt;</pre>
+      <h3>compatibility</h3>
+      <ul>
+        <li>Internet Explorer 6-8</li>
+        <li>Firefox</li>
+        <li>Google Chrome</li>
+        <li>Safari</li>
+        <li>Mobile Safari</li>
+      </ul>
+
+      <h3>source code on GitHub</h3>
+      <p><a href="https://github.com/tanabe/AutoReloader-js">AutoReloader-js</a></p>
+
+      <h3>follow me</h3>
+      <p><a href="http://twitter.com/tanabe/">@tanabe</a></p>
+
+    </div>
+
     <script type="text/javascript" src="auto-reloader.js"></script>
     <script type="text/javascript">
       AutoReloader.add("style.css");

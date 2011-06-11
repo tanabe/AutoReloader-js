@@ -16,6 +16,7 @@
    * create XMLHTTPRequest object
    * @name createXMLHTTPRequest
    * @function
+   * @return XMLHttpRequest object
    */
   var createXMLHTTPRequest = function() {
     //this code borrowed from
@@ -62,6 +63,12 @@
     }, INTERVAL);
   };
 
+  /**
+  * check initialized
+  * @name isInitialied
+  * @function
+  * @return initialized then true
+  */
   var isInitialied = function() {
     for (var i = 0; i < TARGET_FILES.length; i++) {
       if (TARGET_FILES[i].lastModified === null) {
@@ -82,21 +89,23 @@
     var fileName = TARGET_FILES[index].path;
     var lastModified = TARGET_FILES[index].lastModified;
     var xhr = createXMLHTTPRequest();
-    xhr.open('GET', fileName, true);
+    xhr.open("HEAD", fileName, true);
     if (lastModified) {
       xhr.setRequestHeader("If-Modified-Since", lastModified + " ");
     }
+
+    //event handler
     xhr.onreadystatechange = function() {
       if(xhr.readyState === 4){
         var fileLastModified = xhr.getResponseHeader("Last-Modified");
+        //console.log(fileLastModified, xhr.status);
+        //console.log(isInitialied());
         if (xhr.status === 200) {
           if (isInitialied()) {
-            if (xhr.responseText) {
-              if (lastModified !== fileLastModified) {
-                TARGET_FILES[index].lastModified = fileLastModified;
-                //document.getElementById("output").innerHTML = (new Date()).toString();
-                reload();
-              }
+            //maybe not need checking lastModified
+            if (lastModified !== fileLastModified) {
+              TARGET_FILES[index].lastModified = fileLastModified;
+              reload();
             }
           } else {
             TARGET_FILES[index].lastModified = fileLastModified;
