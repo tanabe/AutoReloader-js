@@ -89,6 +89,7 @@
     var fileName = TARGET_FILES[index].path;
     var lastModified = TARGET_FILES[index].lastModified;
     var xhr = createXMLHTTPRequest();
+    //thanks to @oogatta
     xhr.open("HEAD", fileName, true);
     if (lastModified) {
       xhr.setRequestHeader("If-Modified-Since", lastModified + " ");
