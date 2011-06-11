@@ -1,13 +1,14 @@
 /**
 * AutoReloader.js
 * auto reload browser if files were modified.
+* @see https://github.com/tanabe/AutoReloader-js
 */
 (function() {
   var TARGET_FILES = [
     {path: location.href, lastModified: null}
   ];
 
-  var INTERVAL = 1000;
+  var INTERVAL = 500;
 
   var counter = 0;
   var isBusy = false;
@@ -99,8 +100,6 @@
     xhr.onreadystatechange = function() {
       if(xhr.readyState === 4){
         var fileLastModified = xhr.getResponseHeader("Last-Modified");
-        //console.log(fileLastModified, xhr.status);
-        //console.log(isInitialied());
         if (xhr.status === 200) {
           if (isInitialied()) {
             //maybe not need checking lastModified
