@@ -24,7 +24,7 @@ want to watching css, js and swf ? please use AutoReloader.add()
       );
     </script>
 
-### compatibility
+### browser compatibility
 
 * Internet Explorer 6-8
 * Firefox
