@@ -3,9 +3,9 @@
 
 ## what is this ?
 
-this auto refresh browser library.
-please open this file via HTTP
-for example http://localhost/AutoReloader-js/index.html
+this auto refresh browser library.  
+please open this file via HTTP  
+for example http://localhost/AutoReloader-js/index.html  
 and edit this file !
 
 ### usage
