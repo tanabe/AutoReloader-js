@@ -1,17 +1,21 @@
 /**
-* AutoReloader.js
-* auto reload browser if files were modified.
-* @see https://github.com/tanabe/AutoReloader-js
-*/
+ * AutoReloader.js
+ * auto reload browser if files were modified.
+ * @see https://github.com/tanabe/AutoReloader-js
+ * @author Hideaki Tanabe <tanablog@gmail.com>
+ * @usage
+ * include this file on page bottom
+ */
 (function() {
   var TARGET_FILES = [
     {path: location.href, lastModified: null}
   ];
 
   var INTERVAL = 500;
-
+  var WATCH_MAX_TIME = 1000 * 60 * 3;//watching 3 minutes
   var counter = 0;
   var isBusy = false;
+  var now = new Date();
 
   /**
    * create XMLHTTPRequest object
@@ -38,21 +42,26 @@
   };
 
   /**
-  * reload browser
-  * @name reload
-  * @function
-  */
+   * reload browser
+   * @name reload
+   * @function
+   */
   var reload = function() {
     location.reload();
   };
 
   /**
-  * polling
-  * @name polling
-  * @function
-  */
+   * polling
+   * @name polling
+   * @function
+   */
   var polling = function() {
     var id = setInterval(function() {
+      var timesAfter = (new Date().getTime()) - now.getTime();
+      if (timesAfter > WATCH_MAX_TIME) {
+        //clearInterval(id);
+      }
+      //console.log(timesAfter);
       if (!isBusy) {
         checkUpdate(counter);
         if (counter < TARGET_FILES.length - 1) {
@@ -65,11 +74,11 @@
   };
 
   /**
-  * check initialized
-  * @name isInitialied
-  * @function
-  * @return initialized then true
-  */
+   * check initialized
+   * @name isInitialied
+   * @function
+   * @return initialized then true
+   */
   var isInitialied = function() {
     for (var i = 0; i < TARGET_FILES.length; i++) {
       if (TARGET_FILES[i].lastModified === null) {
@@ -80,11 +89,11 @@
   };
 
   /**
-  * check update
-  * @name checkUpdate
-  * @function
-  * @param index 
-  */
+   * check update
+   * @name checkUpdate
+   * @function
+   * @param index 
+   */
   var checkUpdate = function(index) {
     isBusy = true;
     var fileName = TARGET_FILES[index].path;
@@ -102,7 +111,6 @@
         var fileLastModified = xhr.getResponseHeader("Last-Modified");
         if (xhr.status === 200) {
           if (isInitialied()) {
-            //maybe not need checking lastModified
             if (lastModified !== fileLastModified) {
               TARGET_FILES[index].lastModified = fileLastModified;
               reload();
@@ -117,15 +125,63 @@
     xhr.send("")
   };
 
+  var isAdded = function(path) {
+    for (var i = 0; i < TARGET_FILES.length; i++) {
+      if (TARGET_FILES[i].path === path) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   //define interface
   window.AutoReloader = {
+    /**
+     * add watch target file
+     * @name add
+     * @function
+     */
     add: function() {
       for (var i = 0; i < arguments.length; i++) {
-        TARGET_FILES.push({path: arguments[i], lastModified: null});
+        var path = arguments[i];
+        if (!isAdded(path)) {
+          TARGET_FILES.push({path: path, lastModified: null});
+        }
       }
+    },
+
+    /**
+     * watch all css
+     * @name watchCSS
+     * @function
+     */
+    watchCSS: function() {
+      var scriptTags = document.getElementsByTagName("link");
+      var stylesheets = [];
+      for (var i = 0; i < scriptTags.length; i++) {
+        if (scriptTags[i].type === "text/css" && scriptTags[i].href) {
+          this.add(scriptTags[i].href);
+        }
+      }
+    },
+
+    /**
+     * watch all JavaScript
+     * @name watchJS
+     * @function
+     */
+    watchJS: function() {
+      var scriptTags = document.getElementsByTagName("script");
+      var stylesheets = [];
+      for (var i = 0; i < scriptTags.length; i++) {
+        if (scriptTags[i].type === "text/javascript" && scriptTags[i].src) {
+          this.add(scriptTags[i].src);
+        }
+      }
+
     }
   };
 
-  //entry point
+  //begin polling
   polling();
 })();

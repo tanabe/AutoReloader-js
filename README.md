@@ -24,6 +24,23 @@ want to watching css, js and swf ? please use AutoReloader.add()
       );
     </script>
 
+
+### watch all CSS files
+
+when use AutoReloader.watchCSS(), all CSS files are watched.
+
+    <script type="text/javascript">
+      AutoReloader.watchCSS();
+    </script>
+
+### watch all JavaScript files
+
+when use AutoReloader.watchJS(), all JavaScript files are watched.
+
+    <script type="text/javascript">
+      AutoReloader.watchJS();
+    </script>
+
 ### browser compatibility
 
 * Internet Explorer 6-8

@@ -9,7 +9,9 @@
 
     <meta http-equiv="content-script-type" content="text/javascript">
     <meta http-equiv="content-style-type" content="text/css">
+<!--    <link rel="stylesheet" type="text/css" href="common.css">-->
     <link rel="stylesheet" type="text/css" href="style.css">
+<!--    <script type="text/javascript" src="main.js"></script>-->
 
   </head>
   <body>
@@ -27,6 +29,7 @@
       <p>put below code to page bottom</p>
       <pre>
 &lt;script type="text/javascript" src="auto-reloader.js"&gt;&lt;/script&gt;</pre>
+
       <h3>multiple file watching</h3>
       <p>want to watching css, js and swf ? please use AutoReloader.add()</p>
       <pre>
@@ -35,7 +38,22 @@
     "style.css", "index.js", "animation.swf"
   );
 &lt;/script&gt;</pre>
-      <h3>browser compatibility</h3>
+
+      <h3>watch all CSS files</h3>
+      <p>when use AutoReloader.watchCSS(), all CSS files are watched.</p>
+      <pre>
+&lt;script type="text/javascript"&gt;
+  AutoReloader.watchCSS();
+&lt;/script&gt;</pre>
+
+      <h3>watch all JavaScript files</h3>
+      <p>when use AutoReloader.watchJS(), all JavaScript files are watched.</p>
+      <pre>
+&lt;script type="text/javascript"&gt;
+  AutoReloader.watchJS();
+&lt;/script&gt;</pre>
+
+      <h3>compatibility</h3>
       <ul>
         <li>Internet Explorer 6-8</li>
         <li>Firefox</li>
@@ -54,7 +72,8 @@
 
     <script type="text/javascript" src="auto-reloader.js"></script>
     <script type="text/javascript">
-      AutoReloader.add("style.css");
+      AutoReloader.watchCSS();
+      AutoReloader.watchJS();
     </script>
 
   </body>
