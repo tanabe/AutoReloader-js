@@ -16,6 +16,7 @@
   var counter = 0;
   var isBusy = false;
   var now = new Date();
+  var intervalId;
 
   /**
    * create XMLHTTPRequest object
@@ -56,10 +57,10 @@
    * @function
    */
   var polling = function() {
-    var id = setInterval(function() {
+    intervalId = setInterval(function() {
       var timesAfter = (new Date().getTime()) - now.getTime();
       if (timesAfter > WATCH_MAX_TIME) {
-        //clearInterval(id);
+        stopPolling();
       }
       //console.log(timesAfter);
       if (!isBusy) {
@@ -71,6 +72,15 @@
         }
       }
     }, INTERVAL);
+  };
+
+  /**
+   * stop polling
+   * @name stopPolling
+   * @function
+   */
+  var stopPolling = function() {
+    clearInterval(intervalId);
   };
 
   /**
